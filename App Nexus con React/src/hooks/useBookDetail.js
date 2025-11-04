@@ -9,8 +9,8 @@ const useBookDetail = (bookId) => {
 
   useEffect(() => {
     if (!bookId) {
-        setLoading(false);
-        return;
+      setLoading(false);
+      return;
     }
     
     const fetchBook = async () => {
@@ -25,7 +25,7 @@ const useBookDetail = (bookId) => {
         }
 
         const data = await response.json();
-        setBook(data);
+        setBook(data); 
       } catch (err) {
         console.error("Error al cargar el detalle del libro:", err);
         setError("No se pudo cargar la información del libro.");
