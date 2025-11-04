@@ -1,11 +1,13 @@
 import { Navbar as BNavbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const {count} = useCart();
 
   const handleLogout = () => {
     logout();
@@ -61,8 +63,29 @@ const Navbar = () => {
             >
               Eventos
             </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/contact" 
+              active={location.pathname === '/contacto'}
+              className="px-3"
+            >
+              Contacto
+            </Nav.Link>
           </Nav>
+           
           <Nav className="gap-2">
+            <Nav.Link 
+              as={Link} 
+              to="/cart" 
+              active={location.pathname === '/cart'}
+              className="px-3 d-flex align-items-center"
+              aria-label="Carrito"
+            >
+              Carrito
+              {typeof count === 'number' && (
+                <span className="badge bg-light text-dark ms-2">{count}</span>
+              )}
+            </Nav.Link>
             {user ? (
               <>
                 <Nav.Link 

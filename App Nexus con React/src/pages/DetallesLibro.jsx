@@ -1,11 +1,13 @@
 import { Container, Row, Col, Spinner, Alert, Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import useBookDetail from '../hooks/useBookDetail';
+import { useCart } from '../contexts/CartContext';
 
 const DetallesLibro = () => {
   const { id } = useParams(); 
   
   const { book, loading, error } = useBookDetail(id); 
+  const {addItem} = useCart();
 
   if (loading) {
     return (
@@ -61,6 +63,10 @@ const DetallesLibro = () => {
           <p><strong>Páginas:</strong> {book.pages || 'N/A'}</p>
           
           <hr />
+
+          <button className="btn btn-primary mb-3" onClick={() => addItem(book)}>
+            Agregar al carrito
+          </button>
           
           <h4>Descripción</h4>
           <p>{book.description || 'Descripción no disponible.'}</p>
