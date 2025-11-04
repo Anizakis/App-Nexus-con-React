@@ -4,7 +4,6 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // Recuperar usuario del localStorage al iniciar
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
@@ -12,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Guardar usuario en localStorage cuando cambie
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
     } else {
@@ -26,7 +24,6 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true);
       setError(null);
       
-      // Simulación de delay de red
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (credentials.username === 'usuario' && credentials.password === 'password') {
