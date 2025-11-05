@@ -73,7 +73,7 @@ const Navbar = () => {
             </Nav.Link>
           </Nav>
            
-          <Nav className="gap-2">
+          <Nav className="gap-2 align-items-center">
             <Nav.Link 
               as={Link} 
               to="/cart" 
