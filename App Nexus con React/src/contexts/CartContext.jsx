@@ -3,15 +3,20 @@ import { useToast } from './ToastContext';
 
 const CartContext = createContext(null);
 
-const normalize = (b) => {
-  if (!b || typeof b !== 'object') return null;
+const normalize = (item) => {
+  if (!item || typeof item !== 'object') return null;
+  
+  const isProduct = item.name !== undefined || item.description !== undefined;
+  
   return {
-    id: b.id ?? b.ID ?? b._id ?? null,
-    titulo: b.titulo ?? b.title ?? 'Sin título',
-    autor: b.autor ?? b.author ?? 'Desconocido',
-    precio: Number(b.precio ?? b.price ?? 0),
-    imagen: b.imagen ?? b.image ?? b.cover ?? null,
-    categoria: b.categoria ?? b.category ?? 'Sin categoría',
+    id: item.id ?? item.ID ?? item._id ?? null,
+    titulo: item.titulo ?? item.title ?? item.name ?? 'Sin título',
+    autor: item.autor ?? item.author ?? null,
+    descripcion: item.descripcion ?? item.description ?? null,
+    precio: Number(item.precio ?? item.price ?? 0),
+    imagen: item.imagen ?? item.image ?? item.cover ?? null,
+    categoria: item.categoria ?? item.category ?? 'Sin categoría',
+    tipo: isProduct ? 'producto' : 'libro',
   };
 };
 
@@ -31,8 +36,8 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (book, qty = 1) => {
-    const n = normalize(book);
+  const addItem = (item, qty = 1) => {
+    const n = normalize(item);
     if (!n || !n.id) return;
 
     setItems((prev) => {

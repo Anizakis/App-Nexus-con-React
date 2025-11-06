@@ -9,6 +9,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import useProducts from '../hooks/useProducts';
+import { useCart } from '../contexts/CartContext';
 
 const Cafeteria = () => {
   const {
@@ -19,6 +20,8 @@ const Cafeteria = () => {
     selectedCategory,
     setSelectedCategory,
   } = useProducts();
+  
+  const { addItem } = useCart();
 
   if (loading) {
     return (
@@ -43,7 +46,6 @@ const Cafeteria = () => {
     <Container className="py-5">
       <h1 className="text-center mb-4">Menú de la Cafetería</h1>
 
-      {/* Filtro de categorías */}
       <div className="text-center mb-5">
         <ButtonGroup className="flex-wrap">
           <Button
@@ -83,7 +85,7 @@ const Cafeteria = () => {
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text>{product.description}</Card.Text>
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center mb-3">
                   <Badge bg="success" className="px-3 py-2">
                     {product.price.toFixed(2)} €
                   </Badge>
@@ -91,6 +93,13 @@ const Cafeteria = () => {
                     {product.category}
                   </Badge>
                 </div>
+                <Button 
+                  variant="primary" 
+                  className="w-100"
+                  onClick={() => addItem(product)}
+                >
+                  Añadir al carrito
+                </Button>
               </Card.Body>
             </Card>
           </Col>
