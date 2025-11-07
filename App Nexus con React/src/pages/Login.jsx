@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
   const [error, setError] = useState('');
   const [credentials, setCredentials] = useState({ username: '', password: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (login(credentials)) {
+    console.log('Credenciales enviadas:', credentials);
+    const success = await login(credentials);
+    console.log('Resultado login:', success);
+    if (success) {
       navigate('/perfil');
     } else {
       setError('Usuario o contraseña incorrectos');
@@ -30,6 +33,14 @@ const Login = () => {
         <Card className="shadow-lg border-0">
           <Card.Body className="p-4 p-sm-5">
             <h2 className="text-center fw-bold mb-4">Iniciar Sesión</h2>
+
+            <Alert variant="info" className="mb-4">
+              <small>
+                <strong>Credenciales de prueba:</strong><br />
+                Usuario: <code>usuario</code><br />
+                Contraseña: <code>password</code>
+              </small>
+            </Alert>
 
             {error && (
               <Alert variant="danger" className="mb-4">
@@ -72,8 +83,23 @@ const Login = () => {
                   type="submit"
                   size="lg"
                   className="py-3 fw-semibold"
+                  disabled={isLoading}
                 >
-                  Iniciar Sesión
+                  {isLoading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-2"
+                      />
+                      Iniciando sesión...
+                    </>
+                  ) : (
+                    'Iniciar Sesión'
+                  )}
                 </Button>
               </div>
             </Form>

@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
     } else {
       localStorage.removeItem('user');
     }
-    setIsLoading(false);
   }, [user]);
 
   const login = async (credentials) => {
@@ -59,10 +58,6 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     error
   };
-
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
 
   return (
     <AuthContext.Provider value={value}>
